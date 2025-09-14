@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import api from "../api"
+import { Header } from "../components/Header";
 
 function Home() {
     const [products, setProducts] = useState([]);
@@ -19,6 +20,9 @@ function Home() {
 
     return (
         <div>
+            <div>
+                <Header />
+            </div>
             <h2>Products</h2>
             <ul>
                 {
