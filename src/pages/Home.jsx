@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import api from "../api"
 import { Header } from "../components/Header";
+import "../styles/home.scss"
 
 function Home() {
     const [products, setProducts] = useState([]);
