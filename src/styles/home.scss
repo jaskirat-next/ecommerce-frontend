@@ -25,3 +25,27 @@
     }
   }
 }
+
+
+.products_page {
+  .product_col {
+    .product_card {
+      height: 375px;
+      margin-bottom: 20px;
+      .img_area {
+        height: 250px;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+      h3 {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        
+      }
+    }
+  }
+}

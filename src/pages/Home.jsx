@@ -3,6 +3,8 @@ import api from "../api"
 import { Header } from "../components/Header";
 import "../styles/home.scss"
 import banner from "../assets/banner.jpg"
+import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
+
 
 function Home() {
     const [products, setProducts] = useState([]);
@@ -30,19 +32,28 @@ function Home() {
                 <button type="button">Shop Now</button>
             </div>
 
-            <div className="products" xs={3} md={4} lg={6} >
-            <h2>Products</h2>
-            <ul xs={3} md={4} lg={6}>
-                {
-                    products.map((p) => (
-                        <li 
-                            key={p._id}>{p.name} - {p.price}
-                        </li>
-                    ))
-                }
-            </ul>
-            </div>
+        <Container  className="products_page">
+        <h2 className="section-title">All Products</h2>
+        <Row>
+            {
+                products.map((product) => (
+                    <Col key={product._id} lg={3} md={4} sm={6} xs={12} className="product_col">
+                        <Card className="product_card">
+                            <div className="img_area">
+                            <Card.Img src={product.images[0]} alt={product.name} /> 
+                            </div>
+                            <Card.Body>
+                                <h3>{product.name}</h3>
+                                <h5 className="price">₹{product.price}</h5>
+                                <Button className="add-to-cart-btn w-100">Add to Cart</Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))
+            }
+        </Row>
 
+        </Container>
 
         </div>
     )
