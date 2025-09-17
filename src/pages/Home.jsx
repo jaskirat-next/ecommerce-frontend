@@ -3,20 +3,24 @@ import api from "../api"
 import { Header } from "../components/Header";
 import "../styles/home.scss"
 import banner from "../assets/banner.jpg"
-import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Card, Button} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 
 
 function Home() {
+    const navigate = useNavigate(); // ✅ Hook to navigate
+
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await api.get('/product/getAllProduct')
+                const res = await api.get('/product/newCollection')
                 setProducts(res.data)
             } catch (err) {
                 console.error("Error fetching products:", err);
-              }
+            }
         };
 
         fetchProducts();
@@ -29,35 +33,38 @@ function Home() {
             </div>
             <div className="banner">
                 <img src={banner} />
-                <button type="button">Shop Now</button>
+                <button type="button" onClick={() => navigate("/collection/all")}>
+                    Shop Now
+                </button>
+
             </div>
 
-        <Container  className="products_page">
-        <h2 className="section-title">All Products</h2>
-        <Row>
-            {
-                products.map((product) => (
-                    <Col key={product._id} lg={3} md={4} sm={6} xs={12} className="product_col">
-                        <Card className="product_card">
-                            <div className="img_area">
-                            <Card.Img src={product.images[0]} alt={product.name} /> 
-                            </div>
-                            <Card.Body>
-                                <h3>{product.name}</h3>
-                                <h5 className="price">₹{product.price}</h5>
-                                <Button className="add-to-cart-btn w-100">Add to Cart</Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                ))
-            }
-        </Row>
+            <Container className="products_page">
+                <h2 className="section-title">New Collection</h2>
+                <Row>
+                    {
+                        products.map((product) => (
+                            <Col key={product._id} lg={3} md={4} sm={6} xs={12} className="product_col">
+                                <Card className="product_card">
+                                    <div className="img_area">
+                                        <Card.Img src={product.images[0]} alt={product.name} />
+                                    </div>
+                                    <Card.Body>
+                                        <h3>{product.name}</h3>
+                                        <h5 className="price">₹{product.price}</h5>
+                                        <Button className="add-to-cart-btn w-100">Add to Cart</Button>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        ))
+                    }
+                </Row>
 
-        </Container>
+            </Container>
 
         </div>
     )
-    
+
 }
 
 export default Home;

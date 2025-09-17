@@ -9,7 +9,7 @@ export function Header () {
         
         {/* Navigation Links */}
         <nav className="nav-links">
-          <a href="#">Home</a>
+          <a href="/">Home</a>
           <a href="#">Shirts</a>
           <a href="#">T-Shirts</a>
           <a href="#">Polo T-Shirts</a>
