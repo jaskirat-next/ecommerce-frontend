@@ -1,7 +1,10 @@
 import '../styles/header.scss';
-import logo from '../assets/logo.png';
+import logo from '../assets/rr-jain-logo.png';
+import { useNavigate } from "react-router-dom";
+
 
 export function Header () {
+    const navigate = useNavigate();
     return (
         <>
           <header className="header">
@@ -30,6 +33,7 @@ export function Header () {
             <button>🔍</button>
           </div>
           <button className="login-btn">Login</button>
+          <button className="login-btn" onClick={() => navigate("/signup")}>Sign up</button>
         </div>
       </div>
     </header>
