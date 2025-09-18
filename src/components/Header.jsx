@@ -32,7 +32,7 @@ export function Header () {
             <input type="text" placeholder="Search products..." />
             <button>🔍</button>
           </div>
-          <button className="login-btn">Login</button>
+          <button className="login-btn" onClick={() => navigate("/login")}>Login</button>
           <button className="login-btn" onClick={() => navigate("/signup")}>Sign up</button>
         </div>
       </div>

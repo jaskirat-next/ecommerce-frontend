@@ -6,6 +6,7 @@ import './App.css'
 import Home from './pages/Home';
 import { AllCollection } from './pages/allCollection';
 import Signup from './components/Signup';
+import Login from './components/Login';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path='/' element={<Home />} />
       <Route path='/collection/all' element={<AllCollection />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   )
 }
