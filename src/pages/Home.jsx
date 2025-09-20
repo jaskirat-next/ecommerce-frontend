@@ -47,7 +47,7 @@ function Home() {
                             <Col key={product._id} lg={3} md={4} sm={6} xs={12} className="product_col">
                                 <Card className="product_card">
                                     <div className="img_area">
-                                        <Card.Img src={product.images[0]} alt={product.name} />
+                                        <Card.Img src={product.images[1]} alt={product.name} />
                                     </div>
                                     <Card.Body>
                                         <h3>{product.name}</h3>
