@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function Home() {
-    const navigate = useNavigate(); // ✅ Hook to navigate
+    const navigate = useNavigate(); 
 
     const [products, setProducts] = useState([]);
 
