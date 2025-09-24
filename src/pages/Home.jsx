@@ -26,6 +26,19 @@ function Home() {
         fetchProducts();
     }, [])
 
+
+    // cart handle
+
+    const handleAddToCart = async (productId, quantity = 1) => {
+        const token = localStorage.getItem("token");
+        
+        if(!token) {
+            alert("Please Login First");
+            navigate("/login");
+            return;
+        }
+    }
+
     return (
         <div className="main">
             <div>
