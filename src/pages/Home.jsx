@@ -12,6 +12,7 @@ function Home() {
     const navigate = useNavigate(); 
 
     const [products, setProducts] = useState([]);
+    const [loadingProductId, setLoadingProductId] = useState(null)
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -36,6 +37,32 @@ function Home() {
             alert("Please Login First");
             navigate("/login");
             return;
+        }
+
+        try {
+
+        setLoadingProductId(productId)
+        
+        const res = await api.post(
+            '/cart/addToCart',
+            {
+                productId,
+                quantity
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        alert("Product added to cart!");
+        console.log("Cart Response:", res.data);  
+
+        } catch (error) {
+            console.error(error)
+        }finally {
+            setLoadingProductId(null)
         }
     }
 
@@ -65,7 +92,12 @@ function Home() {
                                     <Card.Body>
                                         <h3>{product.name}</h3>
                                         <h5 className="price">₹{product.price}</h5>
-                                        <Button className="add-to-cart-btn w-100">Add to Cart</Button>
+                                        <Button className="add-to-cart-btn w-100"
+                                        onClick={() => handleAddToCart(product._id)}
+                                        disabled={loadingProductId === product._id}
+                                        >
+                                        {loadingProductId === product._id? "Adding...": "Add to Cart"}
+                                        </Button>
                                     </Card.Body>
                                 </Card>
                             </Col>
