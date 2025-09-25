@@ -13,6 +13,7 @@ function Home() {
 
     const [products, setProducts] = useState([]);
     const [loadingProductId, setLoadingProductId] = useState(null)
+    const [cartCount, setCartCount] = useState(0)
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -26,6 +27,29 @@ function Home() {
 
         fetchProducts();
     }, [])
+
+
+    const fetchCartCaount = async () => {
+        const token = localStorage.getItem("token");
+
+        if(!token) {
+            return;
+        } 
+        try {
+            const res = await api.get(
+                "/cart/count",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+            setCartCount(res.data.count || 0)
+
+        } catch (err) {
+            console.error("Error fetching cart count:", err);
+          }
+    } 
 
 
     // cart handle
@@ -57,6 +81,7 @@ function Home() {
         );
 
         alert("Product added to cart!");
+        fetchCartCaount();
         console.log("Cart Response:", res.data);  
 
         } catch (error) {
@@ -69,7 +94,7 @@ function Home() {
     return (
         <div className="main">
             <div>
-                <Header />
+                <Header cartCount={cartCount} />
             </div>
             <div className="banner">
                 <img src={banner} />

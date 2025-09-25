@@ -2,11 +2,15 @@ import { useEffect, useState } from "react"
 import api from "../api";
 import { Container, Row, Col, Card, Button} from "react-bootstrap";
 import { Header } from "../components/Header";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 
 export function AllCollection () {
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [loadingProductId, setLoadingProductId] = useState(null)
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -20,6 +24,41 @@ export function AllCollection () {
 
         fetchProducts();
     }, [])
+
+    const handleAddToCart = async (productId, quantity = 1) => {
+        const token = localStorage.getItem("token");
+
+        if(!token) {
+            alert("PLease Login First");
+            navigate('/login');
+            return
+        }
+
+        try {
+
+            setLoadingProductId(productId)
+
+            const res = await api.post(
+                "/cart/addToCart",
+                {
+                    productId,
+                    quantity
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
+
+            alert("Product added to cart!");
+            console.log("Cart Response:", res.data);  
+        }catch (error) {
+            console.error(error)
+        } finally {
+            setLoadingProductId(null)
+        }
+    }
 
     return (
         <div className="main">
@@ -39,7 +78,11 @@ export function AllCollection () {
                             <Card.Body>
                                 <h3>{product.name}</h3>
                                 <h5 className="price">₹{product.price}</h5>
-                                <Button className="add-to-cart-btn w-100">Add to Cart</Button>
+                                <Button className="add-to-cart-btn w-100"
+                                onClick={() => handleAddToCart(product._id)}
+                                disabled={loadingProductId === product._id}
+
+                                >{loadingProductId === product._id? "Adding..." : "Add to Cart"}</Button>
                             </Card.Body>
                         </Card>
                     </Col>

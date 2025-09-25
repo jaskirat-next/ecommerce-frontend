@@ -1,6 +1,7 @@
 import '../styles/header.scss';
 import logo from '../assets/rr-jain-logo.png';
 import { useNavigate } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa"; 
 
 
 export function Header () {
@@ -31,6 +32,9 @@ export function Header () {
           <div className="search-box">
             <input type="text" placeholder="Search products..." />
             <button>🔍</button>
+          </div>
+          <div>
+          <FaShoppingCart size={24} />
           </div>
           <button className="login-btn" onClick={() => navigate("/login")}>Login</button>
           <button className="login-btn" onClick={() => navigate("/signup")}>Sign up</button>
