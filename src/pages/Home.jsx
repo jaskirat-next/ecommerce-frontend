@@ -26,6 +26,7 @@ function Home() {
         };
 
         fetchProducts();
+        fetchCartCaount()
     }, [])
 
 

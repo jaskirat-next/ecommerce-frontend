@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa"; 
 
 
-export function Header () {
+export function Header ({cartCount}) {
     const navigate = useNavigate();
     return (
         <>
@@ -33,8 +33,15 @@ export function Header () {
             <input type="text" placeholder="Search products..." />
             <button>🔍</button>
           </div>
-          <div>
+          <div className='cart-icon' onClick={() => navigate('/cart')}>
           <FaShoppingCart size={24} />
+          {
+            cartCount > 0 && (
+              <span className="cart-count">
+                {cartCount}
+              </span>
+            )
+          }
           </div>
           <button className="login-btn" onClick={() => navigate("/login")}>Login</button>
           <button className="login-btn" onClick={() => navigate("/signup")}>Sign up</button>

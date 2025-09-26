@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import { AllCollection } from './pages/allCollection';
 import Signup from './components/Signup';
 import Login from './components/Login';
+import { Cart } from './pages/Cart';
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
       <Route path='/collection/all' element={<AllCollection />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/cart" element={<Cart />} />
+
     </Routes>
   )
 }
