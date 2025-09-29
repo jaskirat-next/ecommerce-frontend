@@ -11,6 +11,7 @@ export function AllCollection () {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [loadingProductId, setLoadingProductId] = useState(null)
+    const [cartCount, setCartCount] = useState(0)
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -23,7 +24,26 @@ export function AllCollection () {
         };
 
         fetchProducts();
+        fetchCartCount();
     }, [])
+
+    const fetchCartCount = async () => {
+        const token = localStorage.getItem("token");
+        if(!token) {
+            return;
+        }
+
+        try {
+            const res = await api.get('/cart/count',{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setCartCount(res.data.count || 0)
+        } catch (err) {
+            console.error("Error fetching cart count:", err);
+        }
+    }
 
     const handleAddToCart = async (productId, quantity = 1) => {
         const token = localStorage.getItem("token");
@@ -52,6 +72,7 @@ export function AllCollection () {
             )
 
             alert("Product added to cart!");
+            fetchCartCount();
             console.log("Cart Response:", res.data);  
         }catch (error) {
             console.error(error)
@@ -63,7 +84,7 @@ export function AllCollection () {
     return (
         <div className="main">
          <div>
-            <Header />
+            <Header  cartCount={cartCount}/>
         </div>
         <Container  className="products_page">
         <h2 className="section-title">All Products</h2>
