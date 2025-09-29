@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import api from "../api";
 import { Header } from "../components/Header";
+import "../styles/cart.scss"
 
 export function Cart () {
 
@@ -27,23 +28,35 @@ export function Cart () {
 
 
     return (
-       <div>
+        <>
+        <div>
+            <Header />
+        </div>
+
+        <div className="cart-container">
         <h3>Your Cart</h3>
-        {
-            cartData.length ===0 ? (
-                <p>NO cart Item</p>
-            ): (
-                cartData.map((item) => (
-                    <div key={item._id} style={{ border: "1px solid #ddd", margin: "10px", padding: "10px" }}>
-                        <img src={item.productId.images[0]} />
-                        <p><strong>Product:</strong> {item.productId?.name}</p>
-                        <p><strong>Quantity:</strong> {item.quantity}</p>
-                        <p><strong>Price:</strong> ${item.price}</p>
-                    </div>
-                ))
-            )
-        }
-       </div>
+        {cartData.length === 0 ? (
+          <p className="empty-cart">No cart items</p>
+        ) : (
+          cartData.map((item) => (
+            <div key={item._id} className="cart-item">
+              <img src={item.productId.images[0]} alt={item.productId.name} />
+              <div className="item-details">
+                <p>
+                  <strong>Product:</strong> {item.productId?.name}
+                </p>
+                <p>
+                  <strong>Quantity:</strong> {item.quantity}
+                </p>
+                <p className="price">
+                  <strong>Price:</strong> ₹{item.price}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
+      </div>      
+        </>
     )
 
 
