@@ -51,7 +51,17 @@ export function Cart () {
                 <p className="price">
                   <strong>Price:</strong> ₹{item.price}
                 </p>
+
+                <p className="subtotal">
+                  <strong>Subtotal:</strong> ₹{item.price * item.quantity}
+                </p>
               </div>
+
+              <div>
+
+              </div>
+
+
             </div>
           ))
         )}
