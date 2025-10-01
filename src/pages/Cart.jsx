@@ -26,6 +26,37 @@ export function Cart () {
 
     }, [])
 
+    const token = localStorage.getItem("token");
+
+    const handleIncrease = async (productId) => {
+      try { 
+        const res = await api.put(`/cart/increase/${productId}`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+
+        setCartData(res.data.items || []);
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+
+    const handleDecrease = async (productId) => {
+      try {
+        const res = await api.put(`/cart/decrease/${productId}`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        setCartData(res.data.items || []);
+        } catch (err) {
+        console.log(err)
+      }
+    }
+
 
     return (
         <>
@@ -40,7 +71,11 @@ export function Cart () {
         ) : (
           cartData.map((item) => (
             <div key={item._id} className="cart-item">
-              <img src={item.productId.images[0]} alt={item.productId.name} />
+              <img 
+                src={item.productId?.images?.[0] || "/placeholder.png"} 
+                alt={item.productId?.name || "Product"} 
+              />
+
               <div className="item-details">
                 <p>
                   <strong>Product:</strong> {item.productId?.name}
@@ -56,8 +91,12 @@ export function Cart () {
                   <strong>Subtotal:</strong> ₹{item.price * item.quantity}
                 </p>
               </div>
+              <div className="quantity-controls">
+                <button onClick={() => handleDecrease(item.productId._id)}>-</button>
+                <span>{item.quantity}</span>
+                <button onClick={(() => handleIncrease(item.productId._id))}>+</button>
 
-              <div>
+
 
               </div>
 
