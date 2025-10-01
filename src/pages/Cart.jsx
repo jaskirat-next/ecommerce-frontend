@@ -5,7 +5,8 @@ import "../styles/cart.scss"
 
 export function Cart () {
 
-    const [cartData, setCartData] = useState([]);
+    const [cartCount, setCartCount] = useState(0)
+    const [cartData, setCartData] = useState([]);    
 
     useEffect( () => {
         const fetchCart = async () => {
@@ -19,12 +20,32 @@ export function Cart () {
             })
     
             console.log("Cart Data:", res.data);
-            setCartData(res.data.items || [])
+            setCartData(res.data)
         }
     
         fetchCart();
+        fetchCartCount();
 
     }, [])
+
+    const fetchCartCount = async () => {
+      const token = localStorage.getItem("token");
+      if(!token) {
+          return;
+      }
+
+      try {
+          const res = await api.get('/cart/count',{
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+          })
+          setCartCount(res.data.count || 0)
+      } catch (err) {
+          console.error("Error fetching cart count:", err);
+      }
+  }
+
 
     const token = localStorage.getItem("token");
 
@@ -36,7 +57,9 @@ export function Cart () {
           }
         })
 
-        setCartData(res.data.items || []);
+        fetchCartCount();
+
+        setCartData(res.data);
       } catch (err) {
         console.log(err)
       }
@@ -51,8 +74,28 @@ export function Cart () {
           }
         });
 
-        setCartData(res.data.items || []);
+        fetchCartCount();
+
+
+        setCartData(res.data);
         } catch (err) {
+        console.log(err)
+      }
+    }
+
+    const handleRemove = async (productId) => {
+      try {
+        const res = await api.delete(`/cart/remove/${productId}`,{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+
+        fetchCartCount();
+
+
+        setCartData(res.data)
+      } catch (err) {
         console.log(err)
       }
     }
@@ -61,7 +104,7 @@ export function Cart () {
     return (
         <>
         <div>
-            <Header />
+            <Header  cartCount={cartCount}/>
         </div>
 
         <div className="cart-container">
@@ -69,7 +112,7 @@ export function Cart () {
         {cartData.length === 0 ? (
           <p className="empty-cart">No cart items</p>
         ) : (
-          cartData.map((item) => (
+          cartData.items.map((item) => (
             <div key={item._id} className="cart-item">
               <img 
                 src={item.productId?.images?.[0] || "/placeholder.png"} 
@@ -95,15 +138,18 @@ export function Cart () {
                 <button onClick={() => handleDecrease(item.productId._id)}>-</button>
                 <span>{item.quantity}</span>
                 <button onClick={(() => handleIncrease(item.productId._id))}>+</button>
-
-
-
               </div>
-
-
+              <div className="delete_btn">
+              <button onClick={() => handleRemove(item.productId._id)}>Remove</button>
+              </div>
             </div>
           ))
         )}
+
+      <div className="cart-summary">
+      <h3>Total: ₹{cartData.totalAmount}</h3>
+      <button className="checkout-btn">Proceed to Checkout</button>
+      </div>
       </div>      
         </>
     )
