@@ -43,11 +43,33 @@ export default function CheckOut () {
     }, [])
 
 
+
     const handleInputChange = (e) => {
         setAddress({...address, [e.target.name]: e.target.value})
     }
 
     console.log(summary)
+
+
+    const handlePayment = async () => {
+        try {
+            if(!address.name || !address.street || !address.city || !address.state || !address.pincode || !address.phone) {
+                alert("Please fill in all the address fields");
+                return;    
+            }
+
+            const res = await api.post('/order/placeOrder', {address}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            alert("Order placed successfully! Order ID: " + res.data.order_id);
+        } catch (err) {
+            console.error(err);
+            alert("Something went wrong while placing the order");    
+        }
+    }
 
 
 
@@ -85,7 +107,7 @@ export default function CheckOut () {
                         <input
                         type="text"
                         name="city"
-                        placeholder="State"
+                        placeholder="City"
                         value={address.city}
                         onChange={handleInputChange}
 
@@ -129,7 +151,7 @@ export default function CheckOut () {
 
                     </div>
 
-                    <button>Pay Now</button>
+                    <button onClick={() => handlePayment()}>Pay Now</button>
                 </div>
 
             </div> 
