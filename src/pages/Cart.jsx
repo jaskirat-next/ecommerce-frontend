@@ -2,11 +2,15 @@ import { useEffect, useState } from "react"
 import api from "../api";
 import { Header } from "../components/Header";
 import "../styles/cart.scss"
+import CheckOut from "./checkout";
+import { useNavigate } from "react-router-dom";
+
 
 export function Cart () {
 
     const [cartCount, setCartCount] = useState(0)
-    const [cartData, setCartData] = useState([]);    
+    const [cartData, setCartData] = useState([]);  
+    const navigate = useNavigate() 
 
     useEffect( () => {
         const fetchCart = async () => {
@@ -148,7 +152,7 @@ export function Cart () {
 
       <div className="cart-summary">
       <h3>Total: ₹{cartData.totalAmount}</h3>
-      <button className="checkout-btn">Proceed to Checkout</button>
+      <button className="checkout-btn" onClick={() => navigate("/address")}>Proceed to Checkout</button>
       </div>
       </div>      
         </>
